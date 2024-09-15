@@ -24,7 +24,7 @@ env.config;
 //mongodb connection
 // mongoose.connect(`mongodb://localhost/ecommerce`, {
     // mongoose.connect(`mongodb+srv://root:admin@cluster0.85bcs.mongodb.net/ecommerce?retryWrites=true&w=majority`, {
-    mongoose.connect(`mongodb+srv://royprashant300:DEA0q7KiDXuQ4mlA@cluster0.zalyi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`, {
+    mongoose.connect(`mongodb+srv://royprashant300:DEA0q7KiDXuQ4mlA@cluster0.zalyi.mongodb.net/ecommerce?retryWrites=true&w=majority&appName=Cluster0`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true
