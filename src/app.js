@@ -6,6 +6,9 @@ const path = require('path');
 const cors = require('cors');
 const port = process.env.PORT || 2000;
 
+// var cors = require('cors');
+app.use(cors());
+
 //Routes
 const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin/auth');
