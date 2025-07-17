@@ -4,20 +4,46 @@ const env = require('dotenv');
 const mongoose = require('mongoose');
 const path = require('path');
 const cors = require('cors');
+
 const port = process.env.PORT || 2000;
 
-// var cors = require('cors');
+// ✅ 1. Load environment variables
+env.config();
+
+// ✅ 2. Setup CORS middleware FIRST (before any routes)
 app.use(cors({
   origin: 'https://pluskart-admin-app.vercel.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
-  optionsSuccessStatus: 200  // Important: Avoids failing preflight on some clients
+  optionsSuccessStatus: 200
 }));
 
+// ✅ 3. Explicitly handle preflight OPTIONS requests
 app.options('*', cors());
 
-//Routes
+// ✅ 4. Setup body parsers
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+// ✅ 5. Serve static files
+app.use('/public', express.static(path.join(__dirname, 'uploads')));
+
+// ✅ 6. Connect to MongoDB
+mongoose.connect(
+  'mongodb+srv://royprashant300:DEA0q7KiDXuQ4mlA@cluster0.zalyi.mongodb.net/ecommerce?retryWrites=true&w=majority&appName=Cluster0',
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true // ⚠️ Note: This is deprecated in Mongoose 6+ but okay if you're using older version
+  }
+).then(() => {
+  console.log('database connected');
+}).catch((error) => {
+  console.log('MongoDB connection error:', error);
+});
+
+// ✅ 7. Import and use routes (after middleware)
 const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin/auth');
 const categoryRoutes = require('./routes/category');
@@ -29,26 +55,7 @@ const addressRoutes = require('./routes/address');
 const orderRoutes = require('./routes/order');
 const adminOrderRoute = require('./routes/admin/order.routes');
 
-//Environment variables or constants
-env.config;
-
-//mongodb connection
-// mongoose.connect(`mongodb://localhost/ecommerce`, {
-    // mongoose.connect(`mongodb+srv://root:admin@cluster0.85bcs.mongodb.net/ecommerce?retryWrites=true&w=majority`, {
-    mongoose.connect(`mongodb+srv://royprashant300:DEA0q7KiDXuQ4mlA@cluster0.zalyi.mongodb.net/ecommerce?retryWrites=true&w=majority&appName=Cluster0`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true
-}).then(() => {
-    console.log('database connected');
-}).catch((error)=> {
-    console.log(error);
-});
-
-// app.use(cors());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use('/public',express.static(path.join(__dirname, 'uploads')))
+// ✅ 8. Mount routes
 app.use('/api', authRoutes);
 app.use('/api', adminRoutes);
 app.use('/api', categoryRoutes);
@@ -60,6 +67,7 @@ app.use('/api', addressRoutes);
 app.use('/api', orderRoutes);
 app.use('/api', adminOrderRoute);
 
+// ✅ 9. Start server
 app.listen(port, () => {
-    console.log(`server is running on port ${port}`);
-})
+  console.log(`server is running on port ${port}`);
+});
