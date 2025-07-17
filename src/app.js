@@ -7,7 +7,13 @@ const cors = require('cors');
 const port = process.env.PORT || 2000;
 
 // var cors = require('cors');
-app.use(cors());
+app.use(cors({
+  origin: 'https://pluskart-admin-app.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  optionsSuccessStatus: 200  // Important: Avoids failing preflight on some clients
+}));
 
 //Routes
 const authRoutes = require('./routes/auth');
