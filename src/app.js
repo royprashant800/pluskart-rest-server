@@ -12,7 +12,7 @@ env.config();
 
 // ✅ 2. Setup CORS middleware FIRST (before any routes)
 app.use(cors({
-  origin: 'https://pluskart-admin-app.vercel.app',
+  origin: 'https://pluskart-admin-app-production.up.railway.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
